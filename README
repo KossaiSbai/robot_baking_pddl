@@ -1,0 +1,21 @@
+Install for linux
+------------------
+
+From a linux machine, install flex and bison
+
+> sudo apt-get install flex, bison
+
+Download FF Planner
+http://fai.cs.uni-saarland.de/hoffmann/ff/FF-v2.3.tgz
+
+Uncompress the tar file
+
+Compile FF Planner
+> cd /path-to-FF-v2.3
+> make clean
+> make
+
+Running
+------------------
+
+./ff -o robot_baking.pddl -f brownies.pddl
