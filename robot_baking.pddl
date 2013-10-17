@@ -8,7 +8,7 @@
 
 
 	(
-		:predicates (IN-CONTAINER ?ingredient - ingredient ?container - container) (IN-SPACE ?container - container ?space - space) (MIXED ?ingredient - ingredient) (SIFTED ?ingredient - ingredient) (STRAINED ?ingredient - ingredient) (BAKED ?ingredient - ingredient)
+		:predicates (MIX-CONTAINER ?mixing-container) (IN-CONTAINER ?ingredient - ingredient ?container - container) (IN-SPACE ?container - container ?space - space) (MIXED ?ingredient - ingredient) (SIFTED ?ingredient - ingredient) (STRAINED ?ingredient - ingredient) (BAKED ?ingredient - ingredient)
 	)
 
 	(
@@ -36,6 +36,24 @@
 			(
 				and (IN-SPACE ?container ?to)
 				(NOT (IN-SPACE ?container ?from))
+			)
+	)
+	(
+		:action mix
+			:parameters (?container - mixing-container ?working-space - space)
+			:precondition (and (IN-SPACE ?container ?working-space))
+			:effect
+			(
+				forall (?ingredient - ingredient)
+				(
+					when 
+					(
+\						and (IN-CONTAINER ?ingredient ?container) 
+					)
+					(
+						and (MIXED ?ingredient)
+					)
+				)	
 			)
 	)
 )
