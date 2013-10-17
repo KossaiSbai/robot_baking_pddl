@@ -1,35 +1,41 @@
 (
 	define (domain robot_baking)
+	(:requirements :typing)
 	(
-		:predicates (SPACE ?x) (CONTAINER ?x) (INGREDIENT ?x) (IN-CONTAINER ?x ?y) (IN-SPACE ?x ?y) (MIXED ?x) (SIFTED ?x) (STRAINED ?x) (BAKED ?x)
+		:types 	working-space baking-space - space
+			baking-container mixing-container - container
+	)
+
+
+	(
+		:predicates (IN-CONTAINER ?ingredient - ingredient ?container - container) (IN-SPACE ?container - container ?space - space) (MIXED ?ingredient - ingredient) (SIFTED ?ingredient - ingredient) (STRAINED ?ingredient - ingredient) (BAKED ?ingredient - ingredient)
 	)
 
 	(
 		:action pour 
-			:parameters (?x ?y ?z)	
+			:parameters (?ingredient - ingredient ?pouring-container - container ?receiving-container - container ?working-space - working-space)	
 			:precondition 
 			(
-				and (and (CONTAINER ?x) (CONTAINER ?y) (INGREDIENT ?z))
-                           	(IN-CONTAINER ?z ?x)
+				and (IN-SPACE ?pouring-container ?working-space) (IN-SPACE ?receiving-container ?working-space)
+                           	(IN-CONTAINER ?ingredient ?pouring-container)
 			)
         		:effect 
 			(
-				and (IN-CONTAINER ?z ?y)
-                     		(NOT (IN-CONTAINER ?z ?x))
+				and (IN-CONTAINER ?ingredient ?receiving-container)
+                     		(NOT (IN-CONTAINER ?ingredient ?pouring-container))
 			)
 	)
 	(
-		:action place-container
-			:parameters (?x ?y ?z)
+		:action move
+			:parameters (?container - container ?from - space ?to - space)
 			:precondition
 			(
-				and (and (CONTAINER ?x) (SPACE ?y) (SPACE ?z))
-				(IN-SPACE ?x ?y)
+				and (IN-SPACE ?container ?from)
 			)
 			:effect
 			(
-				and (IN-SPACE ?x ?z)
-				(NOT (IN-SPACE ?x ?y))
+				and (IN-SPACE ?container ?to)
+				(NOT (IN-SPACE ?container ?from))
 			)
 	)
 )
