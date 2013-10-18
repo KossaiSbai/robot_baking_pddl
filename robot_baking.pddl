@@ -3,26 +3,33 @@
 	(:requirements :typing)
 	(
 		:types 	working-space baking-space - space
-			baking-container mixing-container - container
+			heating-space - space
+			heating-container baking-container mixing-container - container	
 	)
-
-
 	(
-		:predicates (MIX-CONTAINER ?mixing-container) (IN-CONTAINER ?ingredient - ingredient ?container - container) (IN-SPACE ?container - container ?space - space) (MIXED ?ingredient - ingredient) (SIFTED ?ingredient - ingredient) (STRAINED ?ingredient - ingredient) (BAKED ?ingredient - ingredient)
+		:predicates (IN-BATTER ?ingredient - ingredient) (IN-CONTAINER ?ingredient - ingredient ?container - container) (IN-SPACE ?container - container ?space - space) (MIXABLE ?ingredient - ingredient) (BAKED ?ingredient - ingredient) (HEATED ?ingredient - ingredient)
 	)
 
 	(
 		:action pour 
-			:parameters (?ingredient - ingredient ?pouring-container - container ?receiving-container - container ?working-space - working-space)	
+			:parameters (?pouring-container - container ?receiving-container - container ?working-space - working-space)	
 			:precondition 
 			(
 				and (IN-SPACE ?pouring-container ?working-space) (IN-SPACE ?receiving-container ?working-space)
-                           	(IN-CONTAINER ?ingredient ?pouring-container)
 			)
-        		:effect 
+        		:effect
 			(
-				and (IN-CONTAINER ?ingredient ?receiving-container)
-                     		(NOT (IN-CONTAINER ?ingredient ?pouring-container))
+				forall (?ingredient - ingredient)
+				(
+					when
+					(
+						and (IN-CONTAINER ?ingredient ?pouring-container)
+					)
+					(
+						and (IN-CONTAINER ?ingredient ?receiving-container)
+						(not (IN-CONTAINER ?ingredient ?pouring-container))
+					)
+				)
 			)
 	)
 	(
@@ -40,20 +47,63 @@
 	)
 	(
 		:action mix
-			:parameters (?container - mixing-container ?working-space - space)
+			:parameters (?container - mixing-container ?working-space - working-space)
 			:precondition (and (IN-SPACE ?container ?working-space))
+			:effect
+			(
+				and
+				(
+					forall (?ingredient - ingredient)
+					(
+						when 
+						(
+							and (IN-CONTAINER ?ingredient ?container) (MIXABLE ?ingredient)
+						)
+						(
+							and (IN-BATTER ?ingredient)
+						)
+					)
+				)
+			)
+	)
+	(
+		:action heat
+			:parameters (?container - heating-container ?heating-space - heating-space)
+			:precondition (and (IN-SPACE ?container ?heating-space))
 			:effect
 			(
 				forall (?ingredient - ingredient)
 				(
-					when 
+					when
 					(
-\						and (IN-CONTAINER ?ingredient ?container) 
+						and (IN-CONTAINER ?ingredient ?container)
 					)
 					(
-						and (MIXED ?ingredient)
+						and (HEATED ?ingredient)(MIXABLE ?ingredient)
 					)
-				)	
+				)
+			)
+	)
+	(
+		:action bake
+			:parameters (?baking-container - baking-container ?baking-space - baking-space)
+			:precondition 
+			(
+				and (IN-SPACE ?baking-container ?baking-space)
+
+			)
+			:effect
+			(
+				forall (?ingredient - ingredient)
+				(
+					when
+					(
+						and (IN-CONTAINER ?ingredient ?baking-container) (IN-BATTER ?ingredient)
+					)
+					(
+						and (BAKED ?ingredient)
+					)
+				)
 			)
 	)
 )
