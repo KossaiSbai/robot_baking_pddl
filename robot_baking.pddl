@@ -83,8 +83,14 @@
 			(
 				forall (?ingredient - ingredient)
 				(
+					when 
+					(
+						and (IN-CONTAINER ?ingredient ?container)
+					)
+					(
 					and (HEATED ?ingredient)(MIXABLE ?ingredient)
 					(increase (burnt-val ?ingredient) 1)
+					)
 				)
 			)
 	)
@@ -104,7 +110,7 @@
 						and (IN-CONTAINER ?ingredient ?baking-container) (IN-BATTER ?ingredient)
 					)
 					(
-						and (BAKED ?ingredient)
+						and (BAKED ?ingredient)(increase (burnt-val ?ingredient) 1)
 					)
 				)
 			)
