@@ -10,7 +10,7 @@
 		(burnt-val ?x)
 	)
 	(
-		:predicates (IN-BATTER ?ingredient - ingredient) (IN-CONTAINER ?ingredient - ingredient ?container - container) (IN-SPACE ?container - container ?space - space) (MIXABLE ?ingredient - ingredient) (BAKED ?ingredient - ingredient) (HEATED ?ingredient - ingredient)
+		:predicates (IN-BATTER ?ingredient - ingredient) (IN-CONTAINER ?ingredient - ingredient ?container - container) (IN-SPACE ?container - container ?space - space) (MIXABLE ?ingredient - ingredient) (BAKED ?ingredient - ingredient)
 	)
 
 	(
@@ -88,7 +88,7 @@
 						and (IN-CONTAINER ?ingredient ?container)
 					)
 					(
-					and (HEATED ?ingredient)(MIXABLE ?ingredient)
+					and (MIXABLE ?ingredient)
 					(increase (burnt-val ?ingredient) 1)
 					)
 				)
