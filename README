@@ -8,9 +8,12 @@ From a linux machine, install flex and bison
 Download FF Planner
 http://fai.cs.uni-saarland.de/hoffmann/ff/FF-v2.3.tgz
 
+For numerical fluent version
+http://fai.cs.uni-saarland.de/hoffmann/ff/Metric-FF.tgz
+
 Uncompress the tar file
 
-Compile FF Planner
+Compile FF Planner/Metric-FF
 > cd /path-to-FF-v2.3
 > make clean
 > make
